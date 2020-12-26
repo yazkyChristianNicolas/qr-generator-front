@@ -1,0 +1,49 @@
+.custom-btn{
+    cursor: pointer;
+    text-shadow: none;
+    font-size: 1rem;
+    padding: 8px 25px;
+    transition: all ease-in-out .15s;
+    display: inline-block;
+    line-height: 1.1;
+    border-radius: 100px;
+    border: 2px solid transparent;
+    font-weight: 500;
+    letter-spacing: -.18px;
+    background-color: #029cdc;
+    color: #fff;
+    transition: all .3s cubic-bezier(.19,1,.22,1);
+    &:active {
+        color: #fff;
+        background-color: #02acf3;
+        box-shadow: 0 2px 3px rgba(0,0,0,.1);
+    }
+    &:active, &:focus, &:hover {
+        outline: 0;
+    }
+    &:focus {
+        color: #fff;
+        background-color: #028ac3;
+    }
+    
+ }
+
+.custom-radio-button-group {
+   display: inherit;
+   flex-direction: column;
+   .mat-radio-button{
+       margin: 5px;
+   }
+}
+  
+.custom-label {
+    padding-right: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #797d80;
+    font-family: "Source Sans Pro";
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 0em;
+}
