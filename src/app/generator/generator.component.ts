@@ -83,7 +83,7 @@ export class GeneratorComponent implements OnInit {
       if(this.wifiForm.valid){
         this.loading = true;
         this.codeApiService.encodeWifi(new WifiCodeRequest(this.wifiForm.controls['ssid'].value,this.wifiForm.controls['password'].value, 
-        this.wifiForm.controls['encryption'].value, this.wifiForm.controls['hidden'].value))
+        this.wifiForm.controls['encryption'].value, this.wifiForm.controls['hidden'].value, this.codeSizeSelected))
             .pipe(catchError(error =>{
               console.log("Wifi encode error");
               console.log(error);
@@ -112,7 +112,7 @@ export class GeneratorComponent implements OnInit {
          this.vcardForm.controls['email'].value,
          this.vcardForm.controls['address'].value,
          this.vcardForm.controls['website'].value,
-         this.vcardForm.controls['note'].value);
+         this.vcardForm.controls['note'].value, this.codeSizeSelected);
          
          this.codeApiService.encodeVCard(vcardRequest)
              .pipe(catchError(error =>{

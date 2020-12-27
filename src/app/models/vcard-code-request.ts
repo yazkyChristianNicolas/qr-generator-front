@@ -1,4 +1,6 @@
-export class VcardCodeRequest {
+import { BaseCodeRequest } from "./base-code-request";
+
+export class VcardCodeRequest extends BaseCodeRequest{
     private name:String;
 	private company:String;
 	private title:String;
@@ -8,7 +10,8 @@ export class VcardCodeRequest {
 	private website:String;
     private note:String;
     
-    public constructor( name:String,company:String,title:String, phoneNumber:String, email:String, address:String, website:String, note:String){
+    public constructor( name:String,company:String,title:String, phoneNumber:String, email:String, address:String, website:String, note:String,size:number){
+             super(size);
              this.name = name;
              this.company = company;
              this.title = title;
