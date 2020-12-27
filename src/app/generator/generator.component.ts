@@ -22,6 +22,11 @@ export class GeneratorComponent implements OnInit {
   placeholderImg:string = "assets/qr-code-placeholder.png";
   imageUrl:string = this.placeholderImg;
   selectedTab:number = 0;
+  codeSizes = [250, 500, 750, 1080, 2160 ];
+  codeSizeSelected = this.codeSizes[0];
+  codeGeneratedName = "code-generated";
+  codeGeneratedContentType = "image/png";
+  base64Code = undefined;
 
   //Form Groups and Controls
   textToEncode:FormControl;
@@ -55,7 +60,7 @@ export class GeneratorComponent implements OnInit {
     if(this.textToEncode.valid || this.urlToEncode.valid){
       let stringToEncode = (this.textToEncode.valid )?this.textToEncode.value: this.urlToEncode.value;
       this.loading = true;
-      this.codeApiService.encodeString(new StringToCodeRequest(stringToEncode))
+      this.codeApiService.encodeString(new StringToCodeRequest(stringToEncode, this.codeSizeSelected))
           .pipe(catchError(error =>{
             console.log("String encode error");
             console.log(error);
@@ -66,7 +71,8 @@ export class GeneratorComponent implements OnInit {
             this.loading = false;
               console.log("String encode response");
               console.log(response);
-              this.imageUrl = "data:image/jpeg;base64," + response.encodeData;
+              this.base64Code = response.encodeData;
+              this.imageUrl = "data:image/jpeg;base64," + this.base64Code;
       });
     }
   }
@@ -88,7 +94,8 @@ export class GeneratorComponent implements OnInit {
               this.loading = false;
                 console.log("Wifi encode response");
                 console.log(response);
-                this.imageUrl = "data:image/jpeg;base64," + response.encodeData;
+                this.base64Code = response.encodeData;
+                this.imageUrl = "data:image/jpeg;base64," + this.base64Code;
         });
         
       }
@@ -118,7 +125,8 @@ export class GeneratorComponent implements OnInit {
                this.loading = false;
                  console.log("VCard encode response");
                  console.log(response);
-                 this.imageUrl = "data:image/jpeg;base64," + response.encodeData;
+                 this.base64Code = response.encodeData;
+                 this.imageUrl = "data:image/jpeg;base64," + this.base64Code;
          });
       }
   }
@@ -162,5 +170,42 @@ export class GeneratorComponent implements OnInit {
     this.wifiForm.controls['encryption'].setValue('nopass');
     this.wifiForm.controls['hidden'].setValue('false');
   }
+
+  convertBase64ToBlobData(base64Data: string, contentType: string='image/png', sliceSize=512) {
+    const byteCharacters = atob(base64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  }
+
+  downloadCode(){
+    const blobData = this.convertBase64ToBlobData(this.base64Code);
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) { //IE
+        window.navigator.msSaveOrOpenBlob(blobData, this.codeGeneratedName);
+      } else { // chrome
+        const blob = new Blob([blobData], { type: this.codeGeneratedContentType });
+        const url = window.URL.createObjectURL(blob);
+        // window.open(url);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = this.codeGeneratedName;
+        link.click();
+      }
+  }
+
 
 }

@@ -20,6 +20,7 @@ export class CodeApiService {
   }
 
   encodeString(request:StringToCodeRequest): Observable<StringToCodeResponse> {
+    console.log(request);
     return this.http.post<StringToCodeResponse>(this.baseUrl + "/qr/string", request, this.httpOptions);
   }
 

@@ -71,7 +71,6 @@
                                     </div>
                                 </div>
                            </form>
-                         
                         </mat-tab>
 
                         <mat-tab>
@@ -150,6 +149,20 @@
                         </mat-tab>
                     </mat-tab-group>
                     
+
+
+                    <div class="properties-container">
+                      <div class="form-row w-100 pt-2">
+                          <div class="form-group col-md-4">
+                            <label for="inputState">Code Size</label>
+                            <select id="inputState" class="form-control" [(ngModel)]="codeSizeSelected">
+                              <option *ngFor="let size of codeSizes" [value]="size">{{size}}px</option>
+                            </select>
+                          </div>
+                      </div>
+                    </div>
+                    
+
                     <button class="custom-btn w-100 mt-2" (click)="encode()">¡Encode!</button>
                 </div>
                 <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
@@ -160,7 +173,7 @@
             <div class="card w-100">
                 <img [src]="imageUrl" class="card-img-top" alt="...">
                 <div class="card-body">
-                  <button class="custom-btn w-100"><mat-icon class="example-tab-icon" style="vertical-align: sub">save_alt</mat-icon> Download</button>
+                  <button class="custom-btn w-100" *ngIf="base64Code != undefined" (click)="downloadCode()"><mat-icon class="example-tab-icon" style="vertical-align: sub">save_alt</mat-icon> Download</button>
                 </div>
             </div> 
         </div>
